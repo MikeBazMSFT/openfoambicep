@@ -1,0 +1,35 @@
+https://github.com/danielsollondon/azvmimagebuilder/blob/master/aibPermissions.md#creating-an-azure-user-assigned-managed-identity
+
+az identity create -g OpenFOAMDemo -n builderId
+
+{
+  "clientId": "",
+  "clientSecretUrl": "",
+  "id": "/subscriptions/sub/resourcegroups/OpenFOAMDemo/providers/Microsoft.ManagedIdentity/userAssignedIdentities/builderId",
+  "location": "eastus",
+  "name": "builderId",
+  "principalId": "",
+  "resourceGroup": "OpenFOAMDemo",
+  "tags": {},
+  "tenantId": "",
+  "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+}
+
+az role assignment create --assignee "" --role Contributor --scope  /subscriptions/sub/resourcegroups/OpenFOAMDemo
+{
+  "canDelegate": null,
+  "condition": null,
+  "conditionVersion": null,
+  "description": null,
+  "id": "/subscriptions/sub/resourcegroups/OpenFOAMDemo/providers/Microsoft.Authorization/roleAssignments/",
+  "name": "",
+  "principalId": "",
+  "principalType": "ServicePrincipal",
+  "resourceGroup": "OpenFOAMDemo",
+  "roleDefinitionId": "/subscriptions/sub/providers/Microsoft.Authorization/roleDefinitions/",
+  "scope": "/subscriptions/sub/resourcegroups/OpenFOAMDemo",
+  "type": "Microsoft.Authorization/roleAssignments"
+}
+
+/subscriptions/sub/resourcegroups/OpenFOAMDemo/providers/Microsoft.ManagedIdentity/userAssignedIdentities/builderId
+

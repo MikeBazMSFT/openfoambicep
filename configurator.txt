@@ -1,0 +1,34 @@
+SlurmctldHost=node00
+NodeName=node[00-00] CPUs=120 RealMemory=448 State=UNKNOWN
+PartitionName=debug Nodes=node[00-00] Default=YES MaxTime=INFINITE State=UP
+
+MpiDefault=none
+ProctrackType=proctrack/cgroup
+ReturnToService=1
+SlurmctldPidFile=/var/spool/slurm/slurmctld.pid
+SlurmctldPort=6817
+SlurmdPidFile=/var/spool/slurm/slurmd.pid
+SlurmdPort=6818
+SlurmdSpoolDir=/var/spool/slurm
+SlurmUser=slurm
+StateSaveLocation=/var/spool/slurm
+SwitchType=switch/none
+TaskPlugin=task/affinity
+InactiveLimit=0
+KillWait=30
+MinJobAge=300
+SlurmctldTimeout=120
+SlurmdTimeout=300
+Waittime=0
+SchedulerType=sched/backfill
+SelectType=select/cons_tres
+SelectTypeParameters=CR_Core
+AccountingStorageType=accounting_storage/none
+#AccountingStorageUser=
+AccountingStoreJobComment=YES
+ClusterName=cluster
+JobCompType=jobcomp/none
+JobAcctGatherFrequency=30
+JobAcctGatherType=jobacct_gather/none
+SlurmctldDebug=info
+SlurmdDebug=info

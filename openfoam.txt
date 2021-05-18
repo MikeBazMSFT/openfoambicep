@@ -1,0 +1,118 @@
+bootcmd:
+  - echo curl -L https://dl.openfoam.com/pubkey.gpg 2>/dev/null | gpg --dearmor > /etc/apt/trusted.gpg.d/openfoam.gpg
+
+# do this in a runcmd because we need the disk space that comes later than packages
+runcmd:
+  - echo apt-get install -y openfoam2012 openfoam2012-tutorials
+
+
+
+curl -s https://dl.openfoam.com/add-debian-repo.sh | sudo bash
+
+sudo apt-get install openfoam2012-default make g++
+
+line 70 of bin/tools/RunFunctions
+
+if ! command -v make > /dev/null
+    then
+echo "No make command found ... cannot compile" 1>&2
+return 1
+    fi
+
+~/foam/tutorials/basic/potentialFoam/cylinder
+
+
+  - sudo apt install -y make g++
+  - curl -s https://dl.openfoam.com/add-debian-repo.sh | sudo bash
+  - sudo apt install -y openfoam2012-default
+
+
+
+//   - openfoam2012-default
+  - make
+  - g++
+
+// apt:
+//   preserve_sources_list: true
+//   primary:
+//     - arches: [amd64]
+//       uri: https://dl.openfoam.com/repos/deb
+
+
+  - echo deb [arch=amd64] https://dl.openfoam.com/repos/deb focal main > /etc/apt/sources.list.d/openfoam.list
+
+      // imageReference: {
+      //   publisher: 'Microsoft-DSVM'
+      //   offer: 'Ubuntu-1804'
+      //   sku: '1804'
+      //   version: 'latest'
+      // }
+
+// https://ochzhen.com/blog/azure-custom-script-extension-linux
+// resource openFoamInstaller 'Microsoft.Compute/virtualMachines/extensions@2020-12-01' = {
+//   name: concat(name, '/CustomScriptExtension')
+//   location: location
+//   dependsOn: [
+//     node
+//   ]
+//   properties: {
+//     publisher: 'Microsoft.Azure.Extensions'
+//     type: 'CustomScript'
+//     typeHandlerVersion: '2.1'
+//     autoUpgradeMinorVersion: true
+//     settings: {
+//       'commandToExecute': 'sudo apt install -y openfoam2012-default'
+//     }
+//   }
+// }
+
+// https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/hpc-compute-infiniband-linux
+// resource infinibandInstaller 'Microsoft.Compute/virtualMachines/extensions@2020-12-01' = [for i in range(0,count): {
+//   name: concat(name, format('00' ,i), '/inifiniband')
+//   location: location
+//   dependsOn: [
+//     node
+//   ]
+//   properties: {
+//     publisher: 'Microsoft.HpcCompute'
+//     type: 'InfiniBandDriverLinux'
+//     typeHandlerVersion: '1.1'
+//     autoUpgradeMinorVersion: true
+//   }
+// }]
+
+
+https://www.servethehome.com/configure-ipoib-mellanox-hcas-ubuntu-12041-lts/
+ibstat
+
+
+https://www.cfd-online.com/Forums/openfoam/197150-openfoam-com-versus-openfoam-org-version-use.html
+
+cp -pr /usr/lib/openfoam/openfoam2012/tutorials ~/tutorials
+cd ~/tutorials
+./Allrun
+
+
+https://develop.openfoam.com/Development/openfoam/-/wikis/precompiled/debian
+
+https://eriklonroth.com/2020/07/11/running-starccm-using-openmpi-on-ubuntu-with-slurm-and-infiniband/
+sudo snap install slurm --classic
+
+openmpi came from somewhere?
+
+srun -N 1 --pty hostname
+
+https://blog.llandsmeer.com/tech/2020/03/02/slurm-single-instance.html
+sudo apt install slurmd slurm-client slurmctld
+
+sudo systemctl start slurmctld
+
+/etc/slurm-llnl/slurm.conf 
+
+sudo mkdir /var/spool/slurm
+sudo chown slurm:slurm /var/spool/slurm
+
+  - systemctl enable --now slurmctld
+  - systemctl enable --now slurmd
+
+
