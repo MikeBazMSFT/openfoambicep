@@ -33,3 +33,9 @@ az role assignment create --assignee "" --role Contributor --scope  /subscriptio
 
 /subscriptions/sub/resourcegroups/OpenFOAMDemo/providers/Microsoft.ManagedIdentity/userAssignedIdentities/builderId
 
+az resource delete --resource-group OpenFOAMDemo --resource-type Microsoft.VirtualMachineImages/imageTemplates -n workerNode
+
+az resource create --resource-group OpenFOAMDemo --properties @imageBuilder.json.local --is-full-object --resource-type Microsoft.VirtualMachineImages/imageTemplates -n workerNode
+
+az resource invoke-action --resource-group OpenFOAMDemo --resource-type Microsoft.VirtualMachineImages/imageTemplates -n workerNode --action Run 
+

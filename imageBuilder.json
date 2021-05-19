@@ -7,7 +7,7 @@
     "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
-            "/subscriptions/something/resourcegroups/OpenFOAMDemo/providers/Microsoft.ManagedIdentity/userAssignedIdentities/builderId": {}
+            "/subscriptions/subid/resourcegroups/OpenFOAMDemo/providers/Microsoft.ManagedIdentity/userAssignedIdentities/builderId": {}
         }
     },
     "properties": {
@@ -25,24 +25,20 @@
         "customize": [
             {
                 "type": "Shell",
-                "name": "Install Upgrades",
+                "name": "Update existing packages and prep repos",
                 "inline": [
-                    "sudo apt install unattended-upgrades"
-                ]
-            },
-            {
-                "type": "Shell",
-                "name": "Prep Repos",
-                "inline": [
-                    "sudo curl -L https://dl.openfoam.com/pubkey.gpg 2>/dev/null | gpg --dearmor > /etc/apt/trusted.gpg.d/openfoam.gpg",
-                    "sudo echo 'deb [trusted=yes] https://dl.openfoam.com/repos/deb $RELEASE main' > /etc/apt/sources.list.d/openfoam.repo"
+                    "sudo sh -c 'curl -L https://dl.openfoam.com/pubkey.gpg 2>/dev/null | gpg --dearmor > /etc/apt/trusted.gpg.d/openfoam.gpg'",
+                    "echo 'deb https://dl.openfoam.com/repos/deb focal main' > /tmp/openfoam.list",
+                    "sudo mv /tmp/openfoam.list /etc/apt/sources.list.d/",
+                    "sudo apt update",
+                    "sudo apt upgrade -y"
                 ]
             },
             {
                 "type": "Shell",
                 "name": "Get AzCopy",
                 "inline": [
-                    "sudo wget -O - https://aka.ms/downloadazcopy-v10-linux | gunzip - | tar xfo - --wildcards --no-anchored --strip-components 1 --directory /usr/sbin azcopy",
+                    "sudo sh -c 'wget -O - https://aka.ms/downloadazcopy-v10-linux | gunzip - | tar xfo - --wildcards --no-anchored --strip-components 1 --directory /usr/sbin azcopy'",
                     "sudo chmod 755 /usr/sbin/azcopy"
                 ]
             },
@@ -50,27 +46,7 @@
                 "type": "Shell",
                 "name": "Packages",
                 "inline": [
-                    "sudo apt-get install make g++ net-tools infiniband-diags ibutils ibverbs-utils openfoam2012-default slurmd slurm-client slurmctld"
-                ]
-            },
-            {
-                "type": "Shell",
-                "name": "Slurm configuration folder",
-                "inline": [
-                    "sudo mkdir /etc/slurm-llnl/"
-                ]
-            },
-            {
-                "type": "File",
-                "name": "slurm.conf",
-                "sourceUri": "https://github.com/MikeBazMSFT/openfoambicep/blob/main/slurm.conf.example",
-                "destination": "/etc/slurm-llnl/slurm.conf"
-            },
-            {
-                "type": "Shell",
-                "name": "Slurm configuration folder",
-                "inline": [
-                    "sudo mkdir /etc/slurm-llnl/"
+                    "sudo apt-get install -y make g\\+\\+ net-tools rdma-core ibutils ibverbs-utils openfoam2012-default slurmd slurm-client slurmctld"
                 ]
             },
             {
@@ -79,6 +55,8 @@
                 "inline": [
                     "sudo systemctl disable --now slurmctld",
                     "sudo systemctl disable --now slurmd",
+                    "sudo sh -c 'curl -L https://github.com/MikeBazMSFT/openfoambicep/blob/main/slurm.conf.example 2>/dev/null > /etc/slurm-llnl/slurm.conf'",
+                    "sudo mkdir /var/spool/slurm",
                     "sudo chown slurm:slurm /var/spool/slurm",
                     "sudo chown slurm:slurm /etc/slurm-llnl/slurm.conf"
                 ]
@@ -87,7 +65,7 @@
         "distribute": [
             {
                 "type": "SharedImage",
-                "galleryImageId": "/subscriptions/resourcegroups/OpenFOAMDemo/providers/Microsoft.Compute/galleries/OpenFoamRepo/images/workerNode",
+                "galleryImageId": "/subscriptions/subid/resourcegroups/OpenFOAMDemo/providers/Microsoft.Compute/galleries/OpenFoamRepo/images/workerNode",
                 "runOutputName": "OpenFOAMDemoImage",
                 "artifactTags": {
                     "source": "azureVmImageBuilder",
