@@ -39,3 +39,11 @@ az resource create --resource-group OpenFOAMDemo --properties @imageBuilder.json
 
 az resource invoke-action --resource-group OpenFOAMDemo --resource-type Microsoft.VirtualMachineImages/imageTemplates -n workerNode --action Run 
 
+
+
+az resource delete --resource-group OpenFOAMDemo --resource-type Microsoft.VirtualMachineImages/imageTemplates -n windowsWorkerNode
+
+az resource create --resource-group OpenFOAMDemo --properties @imageBuilder.Windows.json.local --is-full-object --resource-type Microsoft.VirtualMachineImages/imageTemplates -n windowsWorkerNode
+
+az resource invoke-action --resource-group OpenFOAMDemo --resource-type Microsoft.VirtualMachineImages/imageTemplates -n windowsWorkerNode --action Run 
+

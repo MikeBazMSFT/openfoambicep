@@ -1,0 +1,5 @@
+Run("C:\Windows\Temp\OpenCFD-OpenFOAM-v2012-DP-mingw-crosscompiled-WindowsInstaller.exe /S")
+WinWait("ESI-OpenCFD-OpenFOAM-v2012 Setup", "", 600)
+WinActivate("ESI-OpenCFD-OpenFOAM-v2012 Setup")
+Send("!n")
+Sleep(10)
